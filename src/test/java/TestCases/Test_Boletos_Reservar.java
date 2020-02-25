@@ -76,12 +76,13 @@ public class Test_Boletos_Reservar extends steps_Boletos_Reservar{
         }catch(NoSuchElementException s){
             Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
             this.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
-            throw new Exception(Resultado);
         }catch(InterruptedException e){
             Resultado = "Ejecución Fallida: "+e;
             this.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
-            throw new Exception(Resultado);
         }finally{
+            if(!"Exitoso".equals(Resultado.substring(0, 7))){
+                throw new Exception("Navegador: "+Navegador + "\n Resultado: " + Resultado);
+            }
             this.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
         }
     }

@@ -55,7 +55,7 @@ public class Test_Boletos_Reservar extends steps_Boletos_Reservar{
     @SpiraTestCase(testCaseId=7681)
     public void Test_Ver_Horarios_Boletos() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         try{
-            Escenario = "BTO_Reservar_Buscar sin Origen y Destino.";
+            Escenario = "BTO_Reservar_Buscar sin Origen y Destino";
             Navegador = this.navegador(driver.toString());
             
             //Paso 1

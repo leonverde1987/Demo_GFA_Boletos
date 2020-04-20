@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Properties;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import steps.steps_Boletos_Reservar;
@@ -51,12 +53,13 @@ public class Test_Boletos_Reservar extends steps_Boletos_Reservar{
         
     }
     
+    
+    
     @Test
     @SpiraTestCase(testCaseId=7681)
     public void Test_Ver_Horarios_Boletos() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         try{
             Escenario = "BTO_Reservar_Buscar sin Origen y Destino";
-            Navegador = this.navegador(driver.toString());
             
             //Paso 1
             Pasos.add(contador+".- Abrir navegador en la URL: "+Config.getProperty("urlAppBoletos"));
@@ -64,12 +67,27 @@ public class Test_Boletos_Reservar extends steps_Boletos_Reservar{
             
             //Paso 2
             contador++;
+            Pasos.add(contador+".- Ingresar Origen del viaje.");
+            this.ingresar_Origen(driver, Datos.getProperty("txtOrigen"), contador, Config, Elementos, Escenario, Navegador);
+            
+            //Paso 3
+            contador++;
+            Pasos.add(contador+".- Ingresar Destino del viaje.");
+            this.ingresar_Destino(driver, Datos.getProperty("txtDestino"), contador, Config, Elementos, Escenario, Navegador);
+            
+            //Paso 4
+            contador++;
+            Pasos.add(contador+".- Seleccionar Fecha del viaje.");
+            this.ingresar_Fecha(driver, contador, Config, Elementos, Escenario, Navegador);
+                        
+            //Paso 5
+            contador++;
             Pasos.add(contador+".- Presionar el Botón: Buscar.");
             this.presionar_Buscar(driver, contador, Config, Elementos, Escenario, Navegador);
             
-            //paso 3
+            //paso 6
             contador++;
-            Pasos.add(contador+".- Validar que existe el mensaje "+Datos.getProperty("mensajeAssert")+" y no permita avanzar si no tiene Origen y Destino");
+            Pasos.add(contador+".- Validar que existe el mensaje "+Datos.getProperty("mensajeAssert")+" y muestre el listado de viajes disponibles.");
             Resultado = this.validar_Mensaje(driver, Datos, Config, Elementos, contador, Escenario, Navegador);
             
             
@@ -80,10 +98,10 @@ public class Test_Boletos_Reservar extends steps_Boletos_Reservar{
             Resultado = "Ejecución Fallida: "+e;
             this.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
         }finally{
+            this.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
             if(!"Exitoso".equals(Resultado.substring(0, 7))){
                 throw new Exception("Navegador: "+Navegador + "\n Resultado: " + Resultado);
             }
-            this.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
         }
     }
     

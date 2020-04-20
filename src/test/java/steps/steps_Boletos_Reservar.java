@@ -106,10 +106,10 @@ public class steps_Boletos_Reservar extends genericGrid{
      * @throws InterruptedException Cacha si el archivo Config no existe. 
      */
     public void ingresar_Fecha(RemoteWebDriver driver, int contador, Properties Config, Properties Elementos, String Escenario, String navegador) throws InterruptedException{
-        this.clic_btn(driver, "class", Elementos.getProperty("xpath_btn_Buscar"));
+        this.clic_btn(driver, "xpath", Elementos.getProperty("xpath_txt_fecha"));
+        this.clic_btn(driver, "xpath", Elementos.getProperty("xpath_btn_hoy"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
-        this.enter(driver, "class", Elementos.getProperty("xpath_btn_Buscar"));
-        
+        //this.enter(driver, "class", Elementos.getProperty("xpath_btn_Buscar")); 
     }
     
     /**
@@ -133,7 +133,11 @@ public class steps_Boletos_Reservar extends genericGrid{
     public String validar_Mensaje(RemoteWebDriver driver, Properties Datos, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
         String msj = "";
         try{
-            msj = this.AssertMsjElemento(driver, Datos.getProperty("mensajeAssert"), Elementos.getProperty("xpath_txt_mensajeSalir"));
+            if(navegador.equals("motorolaOneVision")){
+                msj = this.AssertMsjElemento(driver, Datos.getProperty("mensajeAssert"), Elementos.getProperty("mov_xpath_lbl_MensajeDestino"));
+            }else{
+                msj = this.AssertMsjElemento(driver, Datos.getProperty("mensajeAssert"), Elementos.getProperty("xpath_lbl_MensajeDestino"));
+            }
         }catch(ComparisonFailure e){
             msj = "Fallido, Resultado Esperado: "+e;
         }
